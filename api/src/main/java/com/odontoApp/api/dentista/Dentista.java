@@ -1,7 +1,6 @@
 package com.odontoApp.api.dentista;
 
 import com.odontoApp.api.endereco.Endereco;
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -27,4 +26,12 @@ public class Dentista {
 
 	@Embedded
 	private Endereco endereco;
+
+	public Dentista(DadosCadastroDentista dados) {
+		this.nome = dados.nome();
+		this.email = dados.email();
+		this.cro = dados.cro();
+		this.especialidade = dados.especialidade();
+		this.endereco = new Endereco(dados.endereco());
+	}
 }
