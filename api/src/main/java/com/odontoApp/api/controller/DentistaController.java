@@ -26,30 +26,30 @@ import com.odontoApp.api.dentista.DentistaRepository;
 public class DentistaController {
 
 	@Autowired
-	private DentistaRepository repository;
+	private DentistaRepository dentistaRepository;
 
 	@PostMapping
 	@Transactional
 	public void cadastrar(@RequestBody @Valid DadosCadastroDentista dados) {
-		repository.save(new Dentista(dados));
+		dentistaRepository.save(new Dentista(dados));
 	}
 
 	@GetMapping
 	public Page<DadosListagemDentista> listar(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao) {
-		return repository.findAllByAtivoTrue(paginacao).map(DadosListagemDentista::new);
+		return dentistaRepository.findAllByAtivoTrue(paginacao).map(DadosListagemDentista::new);
 	}
 
 	@PutMapping
 	@Transactional
 	public void atualizar(@RequestBody @Valid DadosAtualizacaoDentista dados) {
-		var dentista = repository.getReferenceById(dados.id());
+		var dentista = dentistaRepository.getReferenceById(dados.id());
 		dentista.atualizarInformacoes(dados);
 	}
 
 	@DeleteMapping("/{id}")
 	@Transactional
 	public void excluir(@PathVariable Long id) {
-		var dentista = repository.getReferenceById(id);
+		var dentista = dentistaRepository.getReferenceById(id);
 		dentista.excluir();
 	}
 }
