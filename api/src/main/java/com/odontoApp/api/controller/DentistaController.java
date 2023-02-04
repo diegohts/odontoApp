@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,5 +44,11 @@ public class DentistaController {
 	public void atualizar(@RequestBody @Valid DadosAtualizacaoDentista dados) {
 		var dentista = repository.getReferenceById(dados.id());
 		dentista.atualizarInformacoes(dados);
+	}
+
+	@DeleteMapping("/{id}")
+	@Transactional
+	public void excluir(@PathVariable Long id) {
+		repository.deleteById(id);
 	}
 }
