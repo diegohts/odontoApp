@@ -28,4 +28,34 @@ public class Endereco {
 		this.cidade = endereco.cidade();
 		this.uf = endereco.uf();
 	}
+
+	public void atualizarInformacoes(DadosEndereco dados) {
+		if(logradouro != null){
+			this.logradouro = dados.logradouro();
+		}
+
+		if(bairro != null){
+			this.bairro = dados.bairro();
+		}
+
+		if(cep != null){
+			this.cep = dados.cep();
+		}
+
+		if(numero != null){
+			this.numero = dados.numero();
+		}
+
+		if(complemento != null){
+			this.complemento = dados.complemento();
+		}
+
+		if(cidade != null){
+			this.cidade = dados.cidade();
+		}
+
+		if(uf != null){
+			this.uf = dados.uf();
+		}
+	}
 }

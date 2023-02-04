@@ -1,8 +1,8 @@
 package com.odontoApp.api.dentista;
 
-public record DadosListagemDentista(String nome, String email, String cro, Especialidade especialidade) {
+public record DadosListagemDentista(Long id, String nome, String email, String cro, Especialidade especialidade) {
 
 	public DadosListagemDentista(Dentista dentista) {
-		this(dentista.getNome(), dentista.getEmail(), dentista.getCro(), dentista.getEspecialidade());
+		this(dentista.getId(), dentista.getNome(), dentista.getEmail(), dentista.getCro(), dentista.getEspecialidade());
 	}
 }

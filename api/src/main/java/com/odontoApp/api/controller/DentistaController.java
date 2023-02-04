@@ -7,10 +7,13 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
+
+import com.odontoApp.api.dentista.DadosAtualizacaoDentista;
 import com.odontoApp.api.dentista.DadosCadastroDentista;
 import com.odontoApp.api.dentista.DadosListagemDentista;
 import com.odontoApp.api.dentista.Dentista;
@@ -32,5 +35,12 @@ public class DentistaController {
 	@GetMapping
 	public Page<DadosListagemDentista> listar(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao) {
 		return repository.findAll(paginacao).map(DadosListagemDentista::new);
+	}
+
+	@PutMapping
+	@Transactional
+	public void atualizar(@RequestBody @Valid DadosAtualizacaoDentista dados) {
+		var dentista = repository.getReferenceById(dados.id());
+		dentista.atualizarInformacoes(dados);
 	}
 }
