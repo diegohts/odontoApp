@@ -28,7 +28,10 @@ public class Dentista {
 	@Embedded
 	private Endereco endereco;
 
+	private boolean ativo;
+
 	public Dentista(DadosCadastroDentista dados) {
+		this.ativo = true;
 		this.nome = dados.nome();
 		this.email = dados.email();
 		this.telefone = dados.telefone();
@@ -49,5 +52,9 @@ public class Dentista {
 		if(dados.endereco() != null){
 			this.endereco.atualizarInformacoes(dados.endereco());
 		}
+	}
+
+	public void excluir() {
+		this.ativo = false;
 	}
 }
