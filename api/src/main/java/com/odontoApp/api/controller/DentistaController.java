@@ -4,22 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 import jakarta.validation.Valid;
-
-import com.odontoApp.api.dentista.DadosAtualizacaoDentista;
-import com.odontoApp.api.dentista.DadosCadastroDentista;
-import com.odontoApp.api.dentista.DadosListagemDentista;
-import com.odontoApp.api.dentista.Dentista;
-import com.odontoApp.api.dentista.DentistaRepository;
+import com.odontoApp.api.dentista.*;
 
 @RestController
 @RequestMapping("dentistas")
@@ -30,26 +20,32 @@ public class DentistaController {
 
 	@PostMapping
 	@Transactional
-	public void cadastrar(@RequestBody @Valid DadosCadastroDentista dados) {
-		dentistaRepository.save(new Dentista(dados));
+	public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroDentista dados, UriComponentsBuilder uriBuilder) {
+		var dentista = new Dentista(dados);
+		dentistaRepository.save(dentista);
+		var uri = uriBuilder.path("/dentistas/{id}").buildAndExpand(dentista.getId()).toUri();
+		return ResponseEntity.created(uri).body(new DadosDetalhamentoDentista(dentista));
 	}
 
 	@GetMapping
-	public Page<DadosListagemDentista> listar(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao) {
-		return dentistaRepository.findAllByAtivoTrue(paginacao).map(DadosListagemDentista::new);
+	public ResponseEntity<Page<DadosListagemDentista>> listar(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao) {
+		var page = dentistaRepository.findAllByAtivoTrue(paginacao).map(DadosListagemDentista::new);
+		return ResponseEntity.ok(page);
 	}
 
 	@PutMapping
 	@Transactional
-	public void atualizar(@RequestBody @Valid DadosAtualizacaoDentista dados) {
+	public ResponseEntity atualizar(@RequestBody @Valid DadosAtualizacaoDentista dados) {
 		var dentista = dentistaRepository.getReferenceById(dados.id());
 		dentista.atualizarInformacoes(dados);
+		return ResponseEntity.ok(new DadosDetalhamentoDentista(dentista));
 	}
 
 	@DeleteMapping("/{id}")
 	@Transactional
-	public void excluir(@PathVariable Long id) {
+	public ResponseEntity excluir(@PathVariable Long id) {
 		var dentista = dentistaRepository.getReferenceById(id);
 		dentista.excluir();
+		return ResponseEntity.noContent().build();
 	}
 }
