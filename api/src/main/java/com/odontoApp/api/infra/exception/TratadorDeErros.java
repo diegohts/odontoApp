@@ -1,4 +1,4 @@
-package com.odontoApp.api.infra;
+package com.odontoApp.api.infra.exception;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
