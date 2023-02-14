@@ -1,4 +1,4 @@
-package com.odontoApp.api.paciente;
+package com.odontoApp.api.domain.paciente;
 
 public record DadosListagemPaciente (Long id, String nome, String email, String cpf) {
 

@@ -1,6 +1,7 @@
-package com.odontoApp.api.dentista;
+package com.odontoApp.api.domain.dentista;
 
-import com.odontoApp.api.endereco.DadosEndereco;
+import com.odontoApp.api.domain.endereco.DadosEndereco;
+
 import jakarta.validation.constraints.NotNull;
 
 public record DadosAtualizacaoDentista (

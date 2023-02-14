@@ -1,6 +1,7 @@
-package com.odontoApp.api.dentista;
+package com.odontoApp.api.domain.dentista;
 
-import com.odontoApp.api.endereco.Endereco;
+import com.odontoApp.api.domain.endereco.Endereco;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;

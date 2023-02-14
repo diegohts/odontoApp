@@ -1,4 +1,4 @@
-package com.odontoApp.api.endereco;
+package com.odontoApp.api.domain.endereco;
 
 import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;

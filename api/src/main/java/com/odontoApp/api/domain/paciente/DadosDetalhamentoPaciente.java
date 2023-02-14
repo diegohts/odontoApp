@@ -1,6 +1,6 @@
-package com.odontoApp.api.paciente;
+package com.odontoApp.api.domain.paciente;
 
-import com.odontoApp.api.endereco.Endereco;
+import com.odontoApp.api.domain.endereco.Endereco;
 
 public record DadosDetalhamentoPaciente (Long id, String nome, String email, String cpf, String telefone, Endereco endereco) {
 

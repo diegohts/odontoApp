@@ -1,7 +1,8 @@
-package com.odontoApp.api.paciente;
+package com.odontoApp.api.domain.paciente;
+
+import com.odontoApp.api.domain.endereco.DadosEndereco;
 
 import jakarta.validation.constraints.NotNull;
-import com.odontoApp.api.endereco.DadosEndereco;
 
 public record DadosAtualizacaoPaciente (
 

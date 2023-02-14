@@ -1,6 +1,7 @@
-package com.odontoApp.api.paciente;
+package com.odontoApp.api.domain.paciente;
 
-import com.odontoApp.api.endereco.DadosEndereco;
+import com.odontoApp.api.domain.endereco.DadosEndereco;
+
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

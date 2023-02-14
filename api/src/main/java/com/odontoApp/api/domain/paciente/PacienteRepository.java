@@ -1,4 +1,4 @@
-package com.odontoApp.api.paciente;
+package com.odontoApp.api.domain.paciente;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Page;

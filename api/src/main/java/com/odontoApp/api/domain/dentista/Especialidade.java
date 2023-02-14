@@ -1,4 +1,4 @@
-package com.odontoApp.api.dentista;
+package com.odontoApp.api.domain.dentista;
 
 public enum Especialidade {
 	CLINICO,

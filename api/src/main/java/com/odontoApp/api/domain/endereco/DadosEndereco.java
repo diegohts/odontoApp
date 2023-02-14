@@ -1,4 +1,4 @@
-package com.odontoApp.api.endereco;
+package com.odontoApp.api.domain.endereco;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
