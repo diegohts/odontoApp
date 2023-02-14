@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.odontoApp.api.domain.usuario.DadosAutenticacao;
+import com.odontoApp.api.domain.usuario.Usuario;
+import com.odontoApp.api.infra.security.TokenService;
 import jakarta.validation.Valid;
 
 @RestController
@@ -18,11 +20,14 @@ public class AutenticacaoController {
 	@Autowired
 	private AuthenticationManager manager;
 
+	@Autowired
+	private TokenService tokenService;
+
 	@PostMapping
 	public ResponseEntity efetuarLogin(@RequestBody @Valid DadosAutenticacao dados) {
 		var token = new UsernamePasswordAuthenticationToken(dados.login(), dados.senha());
 		var authentication = manager.authenticate(token);
 
-		return ResponseEntity.ok().build();
+		return ResponseEntity.ok(tokenService.gerarToken((Usuario) authentication.getPrincipal()));
 	}
 }
