@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 @RequestMapping("consultas")
 public class ConsultaController {
 
-	// Peco para o spring injetar essa classe atraves do autowired
 	@Autowired
 	private AgendaDeConsultas agenda;
 

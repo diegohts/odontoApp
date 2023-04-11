@@ -3,6 +3,7 @@ package com.odontoApp.api.domain.consulta;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import com.odontoApp.api.domain.dentista.Especialidade;
 
 public record DadosAgendamentoConsulta(
 	Long idDentista,
@@ -11,6 +12,7 @@ public record DadosAgendamentoConsulta(
 	Long idPaciente,
 
 	@NotNull
-	@Future //Data do futuro, dados do momento daqui pra frente
-	LocalDateTime data) {
+	@Future
+	LocalDateTime data,
+	Especialidade especialidade) {
 }
