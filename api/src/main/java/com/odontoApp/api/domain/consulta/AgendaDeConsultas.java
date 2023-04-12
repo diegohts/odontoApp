@@ -43,10 +43,19 @@ public class AgendaDeConsultas {
 			throw new ValidacaoException("Não existe dentista disponível nessa data");
 		}
 
-		var consulta = new Consulta(null, dentista, paciente, dados.data());
+		var consulta = new Consulta(null, dentista, paciente, dados.data(), null);
 		consultaRepository.save(consulta);
 
 		return new DadosDetalhamentoConsulta(consulta);
+	}
+
+	public void cancelar(DadosCancelamentoConsulta dados) {
+		if (!consultaRepository.existsById(dados.idConsulta())) {
+			throw new ValidacaoException("ID da consulta informado não existe!");
+		}
+
+		var consulta = consultaRepository.getReferenceById(dados.idConsulta());
+		consulta.cancelar(dados.motivo());
 	}
 
 	private Dentista escolherDentista(DadosAgendamentoConsulta dados) {

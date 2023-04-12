@@ -63,7 +63,7 @@ public class DentistaRepositoryTest {
 	}
 
 	private void cadastrarConsulta(Dentista dentista, Paciente paciente, LocalDateTime data) {
-		em.persist(new Consulta(null, dentista, paciente, data));
+		em.persist(new Consulta(null, dentista, paciente, data, null));
 	}
 
 	private Dentista cadastrarDentista(String nome, String email, String crm, Especialidade especialidade) {
