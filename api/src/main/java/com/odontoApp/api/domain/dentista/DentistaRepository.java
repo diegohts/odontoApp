@@ -9,9 +9,6 @@ import java.time.LocalDateTime;
 public interface DentistaRepository extends JpaRepository<Dentista, Long> {
 	Page<Dentista> findAllByAtivoTrue(Pageable paginacao);
 
-	// como o metodo abaixo escreveu em portugues, nao esta seguindo o padrao de nomenclatura em ingles. Entao vamos digitar a consulta SQL
-	// A consulta abaixo e para trazer um dentista de maneira randomica cujo sejam ativos de uma determinada especialidade.
-	// E que o id não seja de um dentista que tenha consulta em uma determinada data marcada
 	@Query("""
 		select d from Dentista d
 		where
@@ -28,4 +25,12 @@ public interface DentistaRepository extends JpaRepository<Dentista, Long> {
 		limit 1
 		""")
 	Dentista escolherDentistaAleatorioLivreNaData(Especialidade especialidade, LocalDateTime data);
+
+	@Query("""
+		select d.ativo
+		from Dentista d
+		where
+		d.id = :id
+		""")
+	Boolean findAtivoById(Long idDentista);
 }

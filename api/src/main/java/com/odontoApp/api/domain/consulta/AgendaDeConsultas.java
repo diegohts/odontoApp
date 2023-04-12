@@ -26,12 +26,10 @@ public class AgendaDeConsultas {
 			throw new ValidacaoException("ID do paciente informado não existe!");
 		}
 
-		// A escolha do dentista eh opcional, sendo que nesse caso o sistema deve escolher aleatoriamente algum dentista disponivel
 		if (dados.idDentista() != null && !dentistaRepository.existsById(dados.idDentista())) {
 			throw new ValidacaoException("ID do dentista informado não existe!");
 		}
-		//Podemos trocar o findById() pelo getReferenceById() também na variável dentista, pois não queremos carregar o objeto para manipula-lo,
-		//mas só para atribui-lo a outro objeto. E não precisamos chamar o .get() que usamos anteriormente.
+
 		var paciente = pacienteRepository.getReferenceById(dados.idPaciente());
 		var dentista = escolherDentista(dados);
 
@@ -39,7 +37,6 @@ public class AgendaDeConsultas {
 		consultaRepository.save(consulta);
 	}
 
-	// escolher o dentista aleatorio de uma determinada especialidade especifica
 	private Dentista escolherDentista(DadosAgendamentoConsulta dados) {
 		if (dados.idDentista() != null) {
 			return dentistaRepository.getReferenceById(dados.idDentista());
