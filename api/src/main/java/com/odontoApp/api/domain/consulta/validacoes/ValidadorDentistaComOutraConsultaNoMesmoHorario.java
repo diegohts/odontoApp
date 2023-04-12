@@ -3,9 +3,13 @@ package com.odontoApp.api.domain.consulta.validacoes;
 import com.odontoApp.api.domain.ValidacaoException;
 import com.odontoApp.api.domain.consulta.ConsultaRepository;
 import com.odontoApp.api.domain.consulta.DadosAgendamentoConsulta;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-public class ValidadorDentistaComOutraConsultaNoMesmoHorario {
+@Component
+public class ValidadorDentistaComOutraConsultaNoMesmoHorario implements ValidadorAgendamentoDeConsulta {
 
+	@Autowired
 	private ConsultaRepository consultaRepository;
 
 	public void validar(DadosAgendamentoConsulta dados) {
