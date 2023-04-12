@@ -24,7 +24,7 @@ public class AgendaDeConsultas {
 	@Autowired
 	private List<ValidadorAgendamentoDeConsulta> validadores;
 
-	public void agendar(DadosAgendamentoConsulta dados) {
+	public DadosDetalhamentoConsulta agendar(DadosAgendamentoConsulta dados) {
 
 		if (!pacienteRepository.existsById(dados.idPaciente())) {
 			throw new ValidacaoException("ID do paciente informado não existe!");
@@ -34,16 +34,19 @@ public class AgendaDeConsultas {
 			throw new ValidacaoException("ID do dentista informado não existe!");
 		}
 
-		// Sao varias classes que tem o mesmo metodo em comum que se chama validar, um cenario de interface
-		//e a assinatura é similar para todas as classes que usam o metodo.
-		//Porem cada um, tem um tratamento e implementacao diferente
 		validadores.forEach(v -> v.validar(dados));
 
 		var paciente = pacienteRepository.getReferenceById(dados.idPaciente());
 		var dentista = escolherDentista(dados);
 
+		if(dentista == null) {
+			throw new ValidacaoException("Não existe dentista disponível nessa data");
+		}
+
 		var consulta = new Consulta(null, dentista, paciente, dados.data());
 		consultaRepository.save(consulta);
+
+		return new DadosDetalhamentoConsulta(consulta);
 	}
 
 	private Dentista escolherDentista(DadosAgendamentoConsulta dados) {

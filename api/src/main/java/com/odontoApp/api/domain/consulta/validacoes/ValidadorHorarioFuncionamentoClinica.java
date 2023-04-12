@@ -13,7 +13,7 @@ public class ValidadorHorarioFuncionamentoClinica implements ValidadorAgendament
 
 		var domingo = dataConsulta.getDayOfWeek().equals(DayOfWeek.SUNDAY);
 		var antesDaAberturaDaClinica = dataConsulta.getHour() < 7;
-		// A clinica fecha as 19 hrs e a duracao fixa eh uma hora, entao a ultima consulta eh as 18hrs
+
 		var depoisDoEncerramentoDaClinica = dataConsulta.getHour() > 18;
 
 		if (domingo || antesDaAberturaDaClinica || depoisDoEncerramentoDaClinica) {

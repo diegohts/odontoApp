@@ -32,5 +32,5 @@ public interface DentistaRepository extends JpaRepository<Dentista, Long> {
 		where
 		d.id = :id
 		""")
-	Boolean findAtivoById(Long idDentista);
+	Boolean findAtivoById(Long id);
 }
