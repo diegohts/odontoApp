@@ -1,4 +1,4 @@
-package com.odontoApp.api.domain.consulta.validacoes;
+package com.odontoApp.api.domain.consulta.validacoes.agendamento;
 
 import com.odontoApp.api.domain.consulta.DadosAgendamentoConsulta;
 

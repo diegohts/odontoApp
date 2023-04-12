@@ -4,7 +4,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.odontoApp.api.domain.ValidacaoException;
-import com.odontoApp.api.domain.consulta.validacoes.ValidadorAgendamentoDeConsulta;
+import com.odontoApp.api.domain.consulta.validacoes.agendamento.ValidadorAgendamentoDeConsulta;
+import com.odontoApp.api.domain.consulta.validacoes.cancelamento.ValidadorCancelamentoDeConsulta;
 import com.odontoApp.api.domain.dentista.Dentista;
 import com.odontoApp.api.domain.dentista.DentistaRepository;
 import com.odontoApp.api.domain.paciente.PacienteRepository;
@@ -24,14 +25,17 @@ public class AgendaDeConsultas {
 	@Autowired
 	private List<ValidadorAgendamentoDeConsulta> validadores;
 
+	@Autowired
+	private List<ValidadorCancelamentoDeConsulta> validadoresCancelamento;
+
 	public DadosDetalhamentoConsulta agendar(DadosAgendamentoConsulta dados) {
 
 		if (!pacienteRepository.existsById(dados.idPaciente())) {
-			throw new ValidacaoException("ID do paciente informado não existe!");
+			throw new ValidacaoException("ID do paciente informado não existe");
 		}
 
 		if (dados.idDentista() != null && !dentistaRepository.existsById(dados.idDentista())) {
-			throw new ValidacaoException("ID do dentista informado não existe!");
+			throw new ValidacaoException("ID do dentista informado não existe");
 		}
 
 		validadores.forEach(v -> v.validar(dados));
@@ -51,8 +55,10 @@ public class AgendaDeConsultas {
 
 	public void cancelar(DadosCancelamentoConsulta dados) {
 		if (!consultaRepository.existsById(dados.idConsulta())) {
-			throw new ValidacaoException("ID da consulta informado não existe!");
+			throw new ValidacaoException("ID da consulta informado não existe");
 		}
+
+		validadoresCancelamento.forEach(v -> v.validar(dados));
 
 		var consulta = consultaRepository.getReferenceById(dados.idConsulta());
 		consulta.cancelar(dados.motivo());

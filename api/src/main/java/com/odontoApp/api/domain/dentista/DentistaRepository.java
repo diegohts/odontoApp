@@ -20,6 +20,8 @@ public interface DentistaRepository extends JpaRepository<Dentista, Long> {
 			select c.dentista.id from Consulta c
 			where
 			c.data = :data
+			and
+			c.motivoCancelamento is null
 		)
 		order by rand()
 		limit 1
