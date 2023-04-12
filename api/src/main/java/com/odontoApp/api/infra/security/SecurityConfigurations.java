@@ -27,6 +27,8 @@ public class SecurityConfigurations {
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and().authorizeHttpRequests()
 				.requestMatchers(HttpMethod.POST, "/login").permitAll()
+				//Abaixo sao os 3 enderecos para liberar, ficando como publico para gerar o spring doc
+				.requestMatchers( "/v3/api-docs/**", "/swagger-ui.html*", "/swagger-ui/**").permitAll()
 				.anyRequest().authenticated()
 				.and().addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
 				.build();
