@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import com.odontoApp.api.domain.dentista.*;
 import jakarta.validation.Valid;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @RestController
 @RequestMapping("dentistas")
+@SecurityRequirement(name = "bearer-key")
 public class DentistaController {
 
 	@Autowired

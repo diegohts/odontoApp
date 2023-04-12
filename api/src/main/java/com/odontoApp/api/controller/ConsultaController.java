@@ -9,11 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.odontoApp.api.domain.consulta.AgendaDeConsultas;
 import com.odontoApp.api.domain.consulta.DadosAgendamentoConsulta;
-import com.odontoApp.api.domain.consulta.DadosDetalhamentoConsulta;
 import org.springframework.beans.factory.annotation.Autowired;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @RestController
 @RequestMapping("consultas")
+@SecurityRequirement(name = "bearer-key")
 public class ConsultaController {
 
 	@Autowired
