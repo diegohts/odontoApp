@@ -35,12 +35,12 @@ public class DentistaRepositoryTest {
 		var proximaSegundaAs10 = LocalDate.now()
 				.with(TemporalAdjusters.next(DayOfWeek.MONDAY))
 				.atTime(10, 0);
-		var dentista = cadastrarDentista("Dentista", "dentista@odontoApp.com", "123456", Especialidade.CLINICO);
+		var dentista = cadastrarDentista("Dentista", "dentista@odontoApp.com", "123456", Especialidade.CLINICO_GERAL);
 		var paciente = cadastrarPaciente("Paciente", "paciente@email.com", "00000000000");
 		cadastrarConsulta(dentista, paciente, proximaSegundaAs10);
 
 		//when ou act
-		var dentistaLivre = dentistaRepository.escolherDentistaAleatorioLivreNaData(Especialidade.CLINICO, proximaSegundaAs10);
+		var dentistaLivre = dentistaRepository.escolherDentistaAleatorioLivreNaData(Especialidade.CLINICO_GERAL, proximaSegundaAs10);
 
 		//then ou assert
 		assertThat(dentistaLivre).isNull();
@@ -53,10 +53,10 @@ public class DentistaRepositoryTest {
 		var proximaSegundaAs10 = LocalDate.now()
 				.with(TemporalAdjusters.next(DayOfWeek.MONDAY))
 				.atTime(10, 0);
-		var dentista = cadastrarDentista("Dentista", "dentista@odontoApp.com", "123456", Especialidade.CLINICO);
+		var dentista = cadastrarDentista("Dentista", "dentista@odontoApp.com", "123456", Especialidade.CLINICO_GERAL);
 
 		//when ou act
-		var dentistaLivre = dentistaRepository.escolherDentistaAleatorioLivreNaData(Especialidade.CLINICO, proximaSegundaAs10);
+		var dentistaLivre = dentistaRepository.escolherDentistaAleatorioLivreNaData(Especialidade.CLINICO_GERAL, proximaSegundaAs10);
 
 		//then ou assert
 		assertThat(dentistaLivre).isEqualTo(dentista);
