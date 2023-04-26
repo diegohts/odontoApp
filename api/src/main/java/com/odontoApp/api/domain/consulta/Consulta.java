@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import com.odontoApp.api.domain.dentista.Dentista;
 import com.odontoApp.api.domain.paciente.Paciente;
+import com.odontoApp.api.domain.procedimento.Procedimento;
 
 @Table(name = "consultas")
 @Entity(name = "Consulta")
@@ -28,6 +29,10 @@ public class Consulta {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "paciente_id")
 	private Paciente paciente;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "procedimento_id")
+	private Procedimento procedimento;
 
 	private LocalDateTime data;
 

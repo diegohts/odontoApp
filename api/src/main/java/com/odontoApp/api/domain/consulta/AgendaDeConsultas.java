@@ -9,6 +9,7 @@ import com.odontoApp.api.domain.consulta.validacoes.cancelamento.ValidadorCancel
 import com.odontoApp.api.domain.dentista.Dentista;
 import com.odontoApp.api.domain.dentista.DentistaRepository;
 import com.odontoApp.api.domain.paciente.PacienteRepository;
+import com.odontoApp.api.domain.procedimento.ProcedimentoRepository;
 
 @Service
 public class AgendaDeConsultas {
@@ -21,6 +22,9 @@ public class AgendaDeConsultas {
 
 	@Autowired
 	private PacienteRepository pacienteRepository;
+
+	@Autowired
+	private ProcedimentoRepository procedimentoRepository;
 
 	@Autowired
 	private List<ValidadorAgendamentoDeConsulta> validadores;
@@ -41,13 +45,14 @@ public class AgendaDeConsultas {
 		validadores.forEach(v -> v.validar(dados));
 
 		var paciente = pacienteRepository.getReferenceById(dados.idPaciente());
+		var procedimento = procedimentoRepository.getReferenceById(dados.idProcedimento());
 		var dentista = escolherDentista(dados);
 
 		if(dentista == null) {
 			throw new ValidacaoException("Não existe dentista disponível nessa data");
 		}
 
-		var consulta = new Consulta(null, dentista, paciente, dados.data(), null);
+		var consulta = new Consulta(null, dentista, paciente, procedimento, dados.data(), null);
 		consultaRepository.save(consulta);
 
 		return new DadosDetalhamentoConsulta(consulta);

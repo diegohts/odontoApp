@@ -9,8 +9,12 @@ import com.odontoApp.api.domain.consulta.Consulta;
 import com.odontoApp.api.domain.endereco.DadosEndereco;
 import com.odontoApp.api.domain.paciente.DadosCadastroPaciente;
 import com.odontoApp.api.domain.paciente.Paciente;
+import com.odontoApp.api.domain.procedimento.DadosCadastroProcedimento;
+import com.odontoApp.api.domain.procedimento.Procedimento;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.junit.jupiter.api.DisplayName;
+
+import java.math.BigDecimal;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -37,7 +41,8 @@ public class DentistaRepositoryTest {
 				.atTime(10, 0);
 		var dentista = cadastrarDentista("Dentista", "dentista@odontoApp.com", "123456", Especialidade.CLINICO_GERAL);
 		var paciente = cadastrarPaciente("Paciente", "paciente@email.com", "00000000000");
-		cadastrarConsulta(dentista, paciente, proximaSegundaAs10);
+		var procedimento = cadastrarProcedimento("Limpeza", "Limpeza dentária", new BigDecimal("20.00"));
+		cadastrarConsulta(dentista, paciente, procedimento, proximaSegundaAs10);
 
 		//when ou act
 		var dentistaLivre = dentistaRepository.escolherDentistaAleatorioLivreNaData(Especialidade.CLINICO_GERAL, proximaSegundaAs10);
@@ -62,8 +67,8 @@ public class DentistaRepositoryTest {
 		assertThat(dentistaLivre).isEqualTo(dentista);
 	}
 
-	private void cadastrarConsulta(Dentista dentista, Paciente paciente, LocalDateTime data) {
-		em.persist(new Consulta(null, dentista, paciente, data, null));
+	private void cadastrarConsulta(Dentista dentista, Paciente paciente, Procedimento procedimento, LocalDateTime data) {
+		em.persist(new Consulta(null, dentista, paciente, procedimento, data, null));
 	}
 
 	private Dentista cadastrarDentista(String nome, String email, String crm, Especialidade especialidade) {
@@ -76,6 +81,12 @@ public class DentistaRepositoryTest {
 		var paciente = new Paciente(dadosPaciente(nome, email, cpf));
 		em.persist(paciente);
 		return paciente;
+	}
+
+	private Procedimento cadastrarProcedimento(String nome, String descricao, BigDecimal preco) {
+		var procedimento = new Procedimento(dadosProcedimento(nome, descricao, preco));
+		em.persist(procedimento);
+		return procedimento;
 	}
 
 	private DadosCadastroDentista dadosDentista(String nome, String email, String crm, Especialidade especialidade) {
@@ -96,6 +107,14 @@ public class DentistaRepositoryTest {
 				"31999999999",
 				cpf,
 				dadosEndereco()
+		);
+	}
+
+	private DadosCadastroProcedimento dadosProcedimento(String nome, String descricao, BigDecimal preco) {
+		return new DadosCadastroProcedimento(
+				nome,
+				descricao,
+				preco
 		);
 	}
 

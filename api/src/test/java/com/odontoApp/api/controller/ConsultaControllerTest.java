@@ -58,7 +58,7 @@ class ConsultaControllerTest {
 		var data = LocalDateTime.now().plusHours(1);
 		var especialidade = Especialidade.ODONTOPEDIATRIA;
 
-		var dadosDetalhamento = new DadosDetalhamentoConsulta(null, 2l, 5l, data);
+		var dadosDetalhamento = new DadosDetalhamentoConsulta(null, 2l, 5l, null, data);
 		when(agendaDeConsultas.agendar(any())).thenReturn(dadosDetalhamento);
 
 		var response = mvc
@@ -66,7 +66,7 @@ class ConsultaControllerTest {
 						post("/consultas")
 								.contentType(MediaType.APPLICATION_JSON)
 								.content(dadosAgendamentoConsultaJson.write(
-										new DadosAgendamentoConsulta(2l, 5l, data, especialidade)
+										new DadosAgendamentoConsulta(2l, 5l, null, data, especialidade)
 								).getJson())
 				)
 				.andReturn().getResponse();
