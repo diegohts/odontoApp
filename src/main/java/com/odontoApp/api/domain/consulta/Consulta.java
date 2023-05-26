@@ -9,6 +9,8 @@ import java.time.LocalDateTime;
 import com.odontoApp.api.domain.dentista.Dentista;
 import com.odontoApp.api.domain.paciente.Paciente;
 import com.odontoApp.api.domain.procedimento.Procedimento;
+import jakarta.validation.constraints.Future;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Table(name = "consultas")
 @Entity(name = "Consulta")
@@ -34,6 +36,8 @@ public class Consulta {
 	@JoinColumn(name = "procedimento_id")
 	private Procedimento procedimento;
 
+	@Future
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private LocalDateTime data;
 
 	@Column(name = "motivo_cancelamento")
