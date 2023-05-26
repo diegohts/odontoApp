@@ -8,23 +8,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-import com.odontoApp.api.domain.convenio.Convenio;
-import com.odontoApp.api.domain.convenio.ConvenioRepository;
-import com.odontoApp.api.domain.convenio.DadosAtualizacaoConvenio;
-import com.odontoApp.api.domain.convenio.DadosCadastroConvenio;
-import com.odontoApp.api.domain.convenio.DadosDetalhamentoConvenio;
-import com.odontoApp.api.domain.convenio.DadosListagemConvenio;
-
+import com.odontoApp.api.domain.convenio.*;
 import jakarta.validation.Valid;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @RestController
-@RequestMapping("convenios")
+@RequestMapping("api/v1/convenios")
 @SecurityRequirement(name = "bearer-key")
 public class ConvenioController {
 
+	private final ConvenioRepository convenioRepository;
+
 	@Autowired
-	private ConvenioRepository convenioRepository;
+	public ConvenioController(ConvenioRepository convenioRepository) {
+		this.convenioRepository = convenioRepository;
+	}
 
 	@PostMapping
 	@Transactional

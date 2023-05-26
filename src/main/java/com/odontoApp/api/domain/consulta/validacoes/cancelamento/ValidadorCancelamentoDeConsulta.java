@@ -4,5 +4,5 @@ import com.odontoApp.api.domain.consulta.DadosCancelamentoConsulta;
 
 public interface ValidadorCancelamentoDeConsulta {
 
-	void validar(DadosCancelamentoConsulta dados);
+	void validar(DadosCancelamentoConsulta dadosCancelamentoConsulta);
 }

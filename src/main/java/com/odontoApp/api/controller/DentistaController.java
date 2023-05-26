@@ -11,50 +11,75 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.odontoApp.api.domain.dentista.*;
 import jakarta.validation.Valid;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import java.net.URI;
+import java.util.Objects;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("dentistas")
+@RequestMapping("api/v1/dentistas")
 @SecurityRequirement(name = "bearer-key")
 public class DentistaController {
 
+	private final DentistaService dentistaService;
+	private final DentistaRepository dentistaRepository;
+
 	@Autowired
-	private DentistaRepository dentistaRepository;
+	public DentistaController(DentistaService dentistaService, DentistaRepository dentistaRepository) {
+		this.dentistaService = dentistaService;
+		this.dentistaRepository = dentistaRepository;
+	}
 
 	@PostMapping
-	@Transactional
-	public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroDentista dados, UriComponentsBuilder uriBuilder) {
-		var dentista = new Dentista(dados);
-		dentistaRepository.save(dentista);
-		var uri = uriBuilder.path("/dentistas/{id}").buildAndExpand(dentista.getId()).toUri();
-		return ResponseEntity.created(uri).body(new DadosDetalhamentoDentista(dentista));
+	public ResponseEntity<DadosDetalhamentoDentista> cadastrar(@RequestBody @Valid DadosCadastroDentista dados, UriComponentsBuilder uriBuilder) {
+
+		DadosDetalhamentoDentista dentista = this.dentistaService.cadastrar(dados);
+		URI uri = uriBuilder.path("/dentistas/{id}").buildAndExpand(dentista.id()).toUri();
+		return ResponseEntity.created(uri).body(dentista);
 	}
 
 	@GetMapping
-	public ResponseEntity<Page<DadosListagemDentista>> listar(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao) {
-		var page = dentistaRepository.findAllByAtivoTrue(paginacao).map(DadosListagemDentista::new);
+	public ResponseEntity<Page<DadosListagemDentista>> listar(@PageableDefault(size = 10, page = 0, sort = {"nome"}) Pageable paginacao) {
+
+		Page<DadosListagemDentista> page = this.dentistaService.listar(paginacao);
 		return ResponseEntity.ok(page);
 	}
 
-	@GetMapping("/{id}")
-	public ResponseEntity detalhar(@PathVariable Long id) {
-		var dentista = dentistaRepository.getReferenceById(id);
-
-		return ResponseEntity.ok(new DadosDetalhamentoDentista(dentista));
-	}
-
 	@PutMapping
-	@Transactional
-	public ResponseEntity atualizar(@RequestBody @Valid DadosAtualizacaoDentista dados) {
-		var dentista = dentistaRepository.getReferenceById(dados.id());
-		dentista.atualizarInformacoes(dados);
-		return ResponseEntity.ok(new DadosDetalhamentoDentista(dentista));
+	public ResponseEntity<DadosDetalhamentoDentista> atualizar(@RequestBody @Valid DadosAtualizacaoDentista dados) {
+
+		DadosDetalhamentoDentista dentista = this.dentistaService.atualizarInformacoes(dados);
+		return ResponseEntity.ok(dentista);
 	}
 
 	@DeleteMapping("/{id}")
-	@Transactional
 	public ResponseEntity excluir(@PathVariable Long id) {
-		var dentista = dentistaRepository.getReferenceById(id);
-		dentista.excluir();
+
+		this.dentistaService.excluir(id);
 		return ResponseEntity.noContent().build();
+	}
+
+	@GetMapping("/{id}")
+	public ResponseEntity<DadosDetalhamentoDentista> detalhar(@PathVariable Long id) {
+		DadosDetalhamentoDentista dentista = dentistaService.detalhar(id);
+
+		return ResponseEntity.ok(dentista);
+	}
+
+	@GetMapping("/existe")
+	public ResponseEntity<Boolean> verificarExistencia(
+			@RequestParam(name = "tipo") Optional<String> tipoInformado,
+			@RequestParam(name = "email", required = false) Optional<String> emailInformado,
+			@RequestParam(name = "cro", required = false) Optional<String> croInformado) {
+		Boolean resultado = true;
+		String tipo = tipoInformado.orElseThrow();
+
+		if (Objects.equals(tipo, "email")) {
+			resultado = dentistaService.emailDentistaJaCadastrado(emailInformado.orElseThrow());
+		}
+		if (Objects.equals(tipo, "cro")) {
+			resultado = dentistaService.croDentistaJaCadastrado(croInformado.orElseThrow());
+		}
+
+		return ResponseEntity.ok(resultado);
 	}
 }

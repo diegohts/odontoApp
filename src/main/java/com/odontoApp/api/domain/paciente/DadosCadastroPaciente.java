@@ -10,21 +10,21 @@ import jakarta.validation.constraints.Pattern;
 
 public record DadosCadastroPaciente (
 
-	@NotBlank
+	@NotBlank(message = "{nome.obrigatorio}")
 	String nome,
 
-	@NotBlank
-	@Email
+	@NotBlank(message = "{email.obrigatorio}")
+	@Email(message = "{email.invalido}")
 	String email,
 
-	@NotBlank
+	@NotBlank(message = "{telefone.obrigatorio}")
 	String telefone,
 
-	@NotBlank
-	@Pattern(regexp = "\\d{3}\\.\\d{3}\\.\\d{3}\\-\\d{2}")
+	@NotBlank(message = "{cpf.obrigatorio}")
+	@Pattern(regexp = "\\d{3}\\.?\\d{3}\\.?\\d{3}-?\\d{2}", message = "{cpf.invalido}")
 	String cpf,
 
-	@NotNull
+	@NotNull(message = "{endereco.obrigatorio}")
 	@Valid
 	DadosEndereco endereco) {
 

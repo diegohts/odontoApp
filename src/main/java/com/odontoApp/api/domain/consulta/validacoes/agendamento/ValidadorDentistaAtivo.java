@@ -9,8 +9,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class ValidadorDentistaAtivo implements ValidadorAgendamentoDeConsulta {
 
+	private final DentistaRepository dentistaRepository;
+
 	@Autowired
-	private DentistaRepository dentistaRepository;
+	public ValidadorDentistaAtivo(DentistaRepository dentistaRepository) {
+		this.dentistaRepository = dentistaRepository;
+	}
 
 	public void validar(DadosAgendamentoConsulta dados) {
 
@@ -20,7 +24,7 @@ public class ValidadorDentistaAtivo implements ValidadorAgendamentoDeConsulta {
 
 		var dentistaEstaAtivo = dentistaRepository.findAtivoById(dados.idDentista());
 		if (!dentistaEstaAtivo) {
-			throw new ValidacaoException("Consulta não pode ser agendada com dentista excluído");
+			throw new ValidacaoException("Consulta não pode ser agendada com dentista inativo");
 		}
 	}
 

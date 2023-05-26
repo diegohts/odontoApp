@@ -9,8 +9,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class ValidadorDentistaComOutraConsultaNoMesmoHorario implements ValidadorAgendamentoDeConsulta {
 
+	private final ConsultaRepository consultaRepository;
+
 	@Autowired
-	private ConsultaRepository consultaRepository;
+	public ValidadorDentistaComOutraConsultaNoMesmoHorario(ConsultaRepository consultaRepository) {
+		this.consultaRepository = consultaRepository;
+	}
 
 	public void validar(DadosAgendamentoConsulta dados) {
 		var dentistaPossuiOutraConsultaNoMesmoHorario = consultaRepository.existsByDentistaIdAndDataAndMotivoCancelamentoIsNull(dados.idDentista(), dados.data());

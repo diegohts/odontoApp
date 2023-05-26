@@ -13,7 +13,7 @@ import jakarta.validation.Valid;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @RestController
-@RequestMapping("pacientes")
+@RequestMapping("api/v1/pacientes")
 @SecurityRequirement(name = "bearer-key")
 public class PacienteController {
 

@@ -19,12 +19,16 @@ import jakarta.validation.Valid;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @RestController
-@RequestMapping("procedimentos")
+@RequestMapping("api/v1/procedimentos")
 @SecurityRequirement(name = "bearer-key")
 public class ProcedimentoController {
 
+	private final ProcedimentoRepository procedimentoRepository;
+
 	@Autowired
-	private ProcedimentoRepository procedimentoRepository;
+	public ProcedimentoController(ProcedimentoRepository procedimentoRepository) {
+		this.procedimentoRepository = procedimentoRepository;
+	}
 
 	@PostMapping
 	@Transactional

@@ -15,4 +15,10 @@ public interface PacienteRepository extends JpaRepository<Paciente, Long> {
 		p.id = :id
 		""")
 	Boolean findAtivoById(Long id);
+
+	@Query("SELECT COUNT(p) > 0 FROM Paciente p WHERE p.email = :email")
+	Boolean existsByEmail(String email);
+
+	@Query("SELECT COUNT(p) > 0 FROM Paciente p WHERE p.cpf = :cpf")
+	Boolean existisByCpf(String cpf);
 }

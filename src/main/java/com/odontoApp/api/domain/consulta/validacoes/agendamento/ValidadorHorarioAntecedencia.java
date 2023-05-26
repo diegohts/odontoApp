@@ -6,7 +6,7 @@ import com.odontoApp.api.domain.ValidacaoException;
 import com.odontoApp.api.domain.consulta.DadosAgendamentoConsulta;
 import org.springframework.stereotype.Component;
 
-@Component("ValidadorHorarioAntecedenciaAgendamento")
+@Component
 public class ValidadorHorarioAntecedencia implements ValidadorAgendamentoDeConsulta {
 
 	public void validar(DadosAgendamentoConsulta dados) {

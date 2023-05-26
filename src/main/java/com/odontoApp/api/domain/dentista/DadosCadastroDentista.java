@@ -10,24 +10,24 @@ import jakarta.validation.constraints.Pattern;
 
 public record DadosCadastroDentista(
 
-	@NotBlank
+	@NotBlank(message = "{nome.obrigatorio}")
 	String nome,
 
-	@NotBlank
-	@Email
+	@NotBlank(message = "{email.obrigatorio}")
+	@Email(message = "{email.invalido}")
 	String email,
 
-	@NotBlank
+	@NotBlank(message = "{telefone.obrigatorio}")
 	String telefone,
 
-	@NotBlank
-	@Pattern(regexp = "\\d{4,6}")
+	@NotBlank(message = "{cro.obrigatorio}")
+	@Pattern(regexp = "\\d{4,6}", message = "{cro.invalido}")
 	String cro,
 
-	@NotNull
+	@NotNull(message = "{especialidade.obrigatoria}")
 	Especialidade especialidade,
 
-	@NotNull
+	@NotNull(message = "{endereco.obrigatorio}")
 	@Valid
 	DadosEndereco endereco) {
 }

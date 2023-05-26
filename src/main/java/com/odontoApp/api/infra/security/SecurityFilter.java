@@ -9,19 +9,20 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-
 import com.odontoApp.api.domain.usuario.UsuarioRepository;
-
 import java.io.IOException;
 
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
 
-	@Autowired
-	private UsuarioRepository usuarioRepository;
+	private final TokenService tokenService;
+	private final UsuarioRepository usuarioRepository;
 
 	@Autowired
-	private TokenService tokenService;
+	public SecurityFilter(TokenService tokenService, UsuarioRepository usuarioRepository) {
+		this.tokenService = tokenService;
+		this.usuarioRepository = usuarioRepository;
+	}
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

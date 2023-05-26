@@ -9,8 +9,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class ValidadorPacienteSemOutraConsultaNoDia implements ValidadorAgendamentoDeConsulta {
 
+	private final ConsultaRepository consultaRepository;
+
 	@Autowired
-	private ConsultaRepository consultaRepository;
+	public ValidadorPacienteSemOutraConsultaNoDia(ConsultaRepository consultaRepository) {
+		this.consultaRepository = consultaRepository;
+	}
 
 	public void validar(DadosAgendamentoConsulta dados) {
 		var primeiroHorario = dados.data().withHour(7);

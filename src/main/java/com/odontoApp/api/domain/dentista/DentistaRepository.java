@@ -35,4 +35,10 @@ public interface DentistaRepository extends JpaRepository<Dentista, Long> {
 		d.id = :id
 		""")
 	Boolean findAtivoById(Long id);
+
+	@Query("SELECT COUNT(d) > 0 FROM Dentista d WHERE d.cro = :cro")
+	Boolean existisByCro(String cro);
+
+	@Query("SELECT COUNT(d) > 0 FROM Dentista d WHERE d.email = :email")
+	Boolean existisByEmail(String email);
 }
