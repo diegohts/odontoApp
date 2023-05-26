@@ -11,10 +11,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @RestController
 @RequestMapping("/user/signup")
 public class CadastroPessoaController {
+
+	private static final Logger logger = LogManager.getLogger(CadastroPessoaController.class);
 
 	private final PessoaService pessoaService;
 
@@ -29,6 +33,8 @@ public class CadastroPessoaController {
 		var uri = uriComponentsBuilder.path("/pessoas/{id}")
 				.buildAndExpand(dadosDetalhamentoPessoa.id())
 				.toUri();
+
+		logger.info("A pessoa " + dadosDetalhamentoPessoa.nome() + " foi cadastrada com sucesso");
 
 		return ResponseEntity.created(uri).body(dadosDetalhamentoPessoa);
 	}

@@ -14,11 +14,15 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import java.net.URI;
 import java.util.Objects;
 import java.util.Optional;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @RestController
 @RequestMapping("api/v1/dentistas")
 @SecurityRequirement(name = "bearer-key")
 public class DentistaController {
+
+	private static final Logger logger = LogManager.getLogger(DentistaController.class);
 
 	private final DentistaService dentistaService;
 	private final DentistaRepository dentistaRepository;
@@ -34,6 +38,9 @@ public class DentistaController {
 
 		DadosDetalhamentoDentista dentista = this.dentistaService.cadastrar(dados);
 		URI uri = uriBuilder.path("/dentistas/{id}").buildAndExpand(dentista.id()).toUri();
+
+		logger.info("O dentista " + dentista.nome() + " foi cadastrado com sucesso");
+
 		return ResponseEntity.created(uri).body(dentista);
 	}
 
@@ -41,6 +48,9 @@ public class DentistaController {
 	public ResponseEntity<Page<DadosListagemDentista>> listar(@PageableDefault(size = 10, page = 0, sort = {"nome"}) Pageable paginacao) {
 
 		Page<DadosListagemDentista> page = this.dentistaService.listar(paginacao);
+
+		logger.info("Listando informacoes dos dentistas");
+
 		return ResponseEntity.ok(page);
 	}
 
@@ -48,6 +58,9 @@ public class DentistaController {
 	public ResponseEntity<DadosDetalhamentoDentista> atualizar(@RequestBody @Valid DadosAtualizacaoDentista dados) {
 
 		DadosDetalhamentoDentista dentista = this.dentistaService.atualizarInformacoes(dados);
+
+		logger.info("O dentista " + dentista.nome() + " foi atualizado com sucesso");
+
 		return ResponseEntity.ok(dentista);
 	}
 
@@ -55,12 +68,17 @@ public class DentistaController {
 	public ResponseEntity excluir(@PathVariable Long id) {
 
 		this.dentistaService.excluir(id);
+
+		logger.info("O dentista de codigo " + id + " foi inativado com sucesso");
+
 		return ResponseEntity.noContent().build();
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<DadosDetalhamentoDentista> detalhar(@PathVariable Long id) {
 		DadosDetalhamentoDentista dentista = dentistaService.detalhar(id);
+
+		logger.info("Obtendo informacoes do dentista " + dentista.nome());
 
 		return ResponseEntity.ok(dentista);
 	}
@@ -79,6 +97,8 @@ public class DentistaController {
 		if (Objects.equals(tipo, "cro")) {
 			resultado = dentistaService.croDentistaJaCadastrado(croInformado.orElseThrow());
 		}
+
+		logger.info("Verificando a existencia do dentista no sistema");
 
 		return ResponseEntity.ok(resultado);
 	}
