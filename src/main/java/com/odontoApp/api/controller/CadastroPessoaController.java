@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
+import java.net.URI;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,9 +29,9 @@ public class CadastroPessoaController {
 	}
 
 	@PostMapping
-	public ResponseEntity<DadosDetalhamentoPessoa> cadastrarPessoa(@RequestBody @Valid DadosCadastroPessoa dadosCadastroPessoa, UriComponentsBuilder uriComponentsBuilder){
+	public ResponseEntity<DadosDetalhamentoPessoa> cadastrarPessoa(@RequestBody @Valid DadosCadastroPessoa dadosCadastroPessoa, UriComponentsBuilder uriBuilder){
 		var dadosDetalhamentoPessoa = pessoaService.cadastrar(dadosCadastroPessoa);
-		var uri = uriComponentsBuilder.path("/pessoas/{id}")
+		URI uri = uriBuilder.path("/pessoas/{id}")
 				.buildAndExpand(dadosDetalhamentoPessoa.id())
 				.toUri();
 

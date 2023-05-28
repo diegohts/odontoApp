@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+import java.net.URI;
 import com.odontoApp.api.domain.convenio.*;
 import jakarta.validation.Valid;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -33,7 +34,7 @@ public class ConvenioController {
 	public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroConvenio dados, UriComponentsBuilder uriBuilder) {
 		var convenio = new Convenio(dados);
 		convenioRepository.save(convenio);
-		var uri = uriBuilder.path("/convenios/{id}").buildAndExpand(convenio.getId()).toUri();
+		URI uri = uriBuilder.path("/convenios/{id}").buildAndExpand(convenio.getId()).toUri();
 
 		logger.info("O convenio de codigo " + convenio.getId() + " foi cadastrado com sucesso");
 

@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+import java.net.URI;
 import com.odontoApp.api.domain.procedimento.DadosAtualizacaoProcedimento;
 import com.odontoApp.api.domain.procedimento.DadosCadastroProcedimento;
 import com.odontoApp.api.domain.procedimento.DadosDetalhamentoProcedimento;
@@ -38,7 +39,7 @@ public class ProcedimentoController {
 	public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroProcedimento dados, UriComponentsBuilder uriBuilder) {
 		var procedimento = new Procedimento(dados);
 		procedimentoRepository.save(procedimento);
-		var uri = uriBuilder.path("/procedimentos/{id}").buildAndExpand(procedimento.getId()).toUri();
+		URI uri = uriBuilder.path("/procedimentos/{id}").buildAndExpand(procedimento.getId()).toUri();
 
 		logger.info("O procedimento de codigo " + procedimento.getId() + " foi cadastrado com sucesso");
 

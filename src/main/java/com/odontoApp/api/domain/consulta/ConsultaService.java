@@ -15,12 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ConsultaService {
 
-	private ConsultaRepository consultaRepository;
-	private DentistaRepository dentistaRepository;
-	private PacienteRepository pacienteRepository;
-	private ProcedimentoRepository procedimentoRepository;
-	private List<ValidadorAgendamentoDeConsulta> validadoresConsulta;
-	private List<ValidadorCancelamentoDeConsulta> validadoresCancelamento;
+	private final ConsultaRepository consultaRepository;
+	private final DentistaRepository dentistaRepository;
+	private final PacienteRepository pacienteRepository;
+	private final ProcedimentoRepository procedimentoRepository;
+	private final List<ValidadorAgendamentoDeConsulta> validadoresConsulta;
+	private final List<ValidadorCancelamentoDeConsulta> validadoresCancelamento;
 
 	@Autowired
 	public ConsultaService(
