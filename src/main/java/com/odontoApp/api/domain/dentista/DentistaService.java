@@ -5,20 +5,42 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.odontoApp.api.domain.ValidacaoException;
+import com.odontoApp.api.domain.usuario.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @Service
 public class DentistaService {
 
+	private static final Logger logger = LogManager.getLogger(DentistaService.class);
+
 	private final DentistaRepository dentistaRepository;
+	private final TipoRepository tipoRepository;
+	private final UsuarioRepository usuarioRepository;
 
 	@Autowired
-	public DentistaService(DentistaRepository dentistaRepository) {
+	public DentistaService(DentistaRepository dentistaRepository, TipoRepository tipoRepository, UsuarioRepository usuarioRepository) {
 		this.dentistaRepository = dentistaRepository;
+		this.tipoRepository = tipoRepository;
+		this.usuarioRepository = usuarioRepository;
 	}
 
 	@Transactional
 	public DadosDetalhamentoDentista cadastrar(DadosCadastroDentista dados){
 		Dentista dentista = this.dentistaRepository.save(new Dentista(dados));
+
+		Usuario usuarioDentista = usuarioRepository.getReferenceUsuarioByLogin(dentista.getEmail());
+		if (usuarioDentista == null) {
+			logger.info("Usuario do dentista nulo atraves da busca por login");
+			throw new ValidacaoException("Busca do usuario do dentista não encontrado");
+		}
+
+		Tipo dentistaPerfil = new Tipo();
+		dentistaPerfil.setUsuario(usuarioDentista);
+		dentistaPerfil.setPerfil(new Perfil(2L, "ROLE_DENTISTA"));
+
+		tipoRepository.save(dentistaPerfil);
 
 		return new DadosDetalhamentoDentista(dentista);
 	}

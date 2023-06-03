@@ -13,6 +13,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
+import java.util.ArrayList;
 
 @Table(name = "usuarios")
 @Entity(name = "Usuario")
@@ -33,9 +34,12 @@ public class Usuario implements UserDetails {
 	@PrimaryKeyJoinColumn
 	private Pessoa pessoa;
 
+	@ManyToMany(fetch = FetchType.EAGER)
+	private List<Perfil> perfis = new ArrayList<>();
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+		return this.perfis;
 	}
 
 	@Override
