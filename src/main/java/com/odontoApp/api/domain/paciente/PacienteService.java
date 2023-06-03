@@ -17,8 +17,11 @@ public class PacienteService {
 	}
 
 	@Transactional
-	public Paciente cadastrar(DadosCadastroPaciente dados){
-		return this.pacienteRepository.save(new Paciente(dados));
+	public DadosDetalhamentoPaciente cadastrar(DadosCadastroPaciente dados){
+
+		Paciente paciente = this.pacienteRepository.save(new Paciente(dados));
+
+		return new DadosDetalhamentoPaciente(paciente);
 	}
 
 	public Page<DadosListagemPaciente> listar(Pageable paginacao){
@@ -26,21 +29,27 @@ public class PacienteService {
 	}
 
 	@Transactional
-	public Paciente atualizarInformacoes(DadosAtualizacaoPaciente dados) {
+	public DadosDetalhamentoPaciente atualizarInformacoes(DadosAtualizacaoPaciente dados) {
+
 		Paciente paciente = this.pacienteRepository.getReferenceById(dados.id());
 		paciente.atualizarInformacoes(dados);
 
-		return paciente;
+		return new DadosDetalhamentoPaciente(paciente);
 	}
 
 	@Transactional
-	public void excluir(Long id){
+	public DadosDetalhamentoPaciente excluir(Long id){
 		Paciente paciente = this.pacienteRepository.getReferenceById(id);
 		paciente.excluir();
+
+		return new DadosDetalhamentoPaciente(paciente);
 	}
 
-	public Paciente detalhar(Long id) {
-		return this.pacienteRepository.getReferenceById(id);
+	public DadosDetalhamentoPaciente detalhar(Long id) {
+
+		Paciente paciente = this.pacienteRepository.getReferenceById(id);
+
+		return new DadosDetalhamentoPaciente(paciente);
 	}
 
 	public Boolean emailPacienteJaCadastrado(String email) {
