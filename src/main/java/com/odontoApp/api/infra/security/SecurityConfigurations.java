@@ -53,10 +53,6 @@ public class SecurityConfigurations {
 							request.getServletPath().equals("/swagger-ui.html") ||
 							request.getServletPath().startsWith("/swagger-ui/")
 					).permitAll()
-					.requestMatchers(request ->
-						request.getMethod().equals(HttpMethod.GET.name()) &&
-						request.getServletPath().startsWith("/api/v1/pagamentos/*")
-					).hasRole("ADMINISTRADOR")
 					.anyRequest().authenticated()
 				.and()
 				.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

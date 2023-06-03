@@ -23,59 +23,61 @@ public class PacienteController {
 	private static final Logger logger = LogManager.getLogger(PacienteController.class);
 
 	private final PacienteRepository pacienteRepository;
-	private final PacienteService pacienteService;
 
 	@Autowired
-	public PacienteController(PacienteService pacienteService, PacienteRepository pacienteRepository) {
-		this.pacienteService = pacienteService;
+	public PacienteController(PacienteRepository pacienteRepository) {
 		this.pacienteRepository = pacienteRepository;
 	}
 
 	@PostMapping
-	public ResponseEntity<DadosDetalhamentoPaciente> cadastrar(@RequestBody @Valid DadosCadastroPaciente dados, UriComponentsBuilder uriBuilder) {
+	@Transactional
+	public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroPaciente dados, UriComponentsBuilder uriBuilder) {
+		var paciente = new Paciente(dados);
+		pacienteRepository.save(paciente);
 
-		DadosDetalhamentoPaciente paciente = this.pacienteService.cadastrar(dados);
+		URI uri = uriBuilder.path("/pacientes/{id}").buildAndExpand(paciente.getId()).toUri();
 
-		URI uri = uriBuilder.path("/pacientes/{id}").buildAndExpand(paciente.id()).toUri();
+		logger.info("O paciente " + paciente.getNome() + " foi cadastrado com sucesso");
 
-		logger.info("O paciente " + paciente.nome() + " foi cadastrado com sucesso");
-
-		return ResponseEntity.created(uri).body(paciente);
+		return ResponseEntity.created(uri).body(new DadosDetalhamentoPaciente(paciente));
 	}
 
 	@GetMapping
 	public ResponseEntity<Page<DadosListagemPaciente>> listar(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao) {
+		var page = pacienteRepository.findAllByAtivoTrue(paginacao).map(DadosListagemPaciente::new);
 
-		Page<DadosListagemPaciente> page = this.pacienteService.listar(paginacao);
 		logger.info("Listando informacoes dos pacientes");
 
 		return ResponseEntity.ok(page);
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<DadosDetalhamentoPaciente> detalhar(@PathVariable Long id) {
-		DadosDetalhamentoPaciente paciente = pacienteService.detalhar(id);
+	public ResponseEntity detalhar(@PathVariable Long id) {
+		var paciente = pacienteRepository.getReferenceById(id);
 
-		logger.info("Obtendo informacoes do paciente " + paciente.nome());
+		logger.info("Obtendo informacoes do paciente " + paciente.getNome());
 
-		return ResponseEntity.ok(paciente);
+		return ResponseEntity.ok(new DadosDetalhamentoPaciente(paciente));
 	}
 
 	@PutMapping
-	public ResponseEntity<DadosDetalhamentoPaciente> atualizar(@RequestBody @Valid DadosAtualizacaoPaciente dados) {
+	@Transactional
+	public ResponseEntity atualizar(@RequestBody @Valid DadosAtualizacaoPaciente dados) {
+		var paciente = pacienteRepository.getReferenceById(dados.id());
+		paciente.atualizarInformacoes(dados);
 
-		DadosDetalhamentoPaciente paciente = this.pacienteService.atualizarInformacoes(dados);
+		logger.info("O paciente " + paciente.getNome() + " foi atualizado com sucesso");
 
-		logger.info("O paciente " + paciente.nome() + " foi atualizado com sucesso");
-
-		return ResponseEntity.ok(paciente);
+		return ResponseEntity.ok(new DadosDetalhamentoPaciente(paciente));
 	}
 
 	@DeleteMapping("/{id}")
+	@Transactional
 	public ResponseEntity excluir(@PathVariable Long id) {
-		this.pacienteService.excluir(id);
+		var paciente = pacienteRepository.getReferenceById(id);
+		paciente.excluir();
 
-		logger.info("O paciente de codigo" + id + " foi inativado com sucesso");
+		logger.info("O paciente " + paciente.getNome() + " foi inativado com sucesso");
 
 		return ResponseEntity.noContent().build();
 	}
