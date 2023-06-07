@@ -1,16 +1,18 @@
 package com.odontoApp.api.domain.paciente;
 
 import com.odontoApp.api.domain.endereco.Endereco;
-
+import com.odontoApp.api.domain.convenio.*;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.NoArgsConstructor;
 
 @Table(name = "pacientes")
 @Entity(name = "Paciente")
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
@@ -23,17 +25,22 @@ public class Paciente {
 	private String telefone;
 	private String cpf;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "convenio_id")
+	private Convenio convenio;
+
 	@Embedded
 	private Endereco endereco;
 
 	private boolean ativo;
 
-	public Paciente(DadosCadastroPaciente dados) {
+	public Paciente(DadosCadastroPaciente dados, Convenio convenio) {
 		this.ativo = true;
 		this.nome = dados.nome();
 		this.email = dados.email();
 		this.telefone = dados.telefone();
 		this.cpf = dados.cpf();
+		this.convenio = convenio;
 		this.endereco = new Endereco(dados.endereco());
 	}
 

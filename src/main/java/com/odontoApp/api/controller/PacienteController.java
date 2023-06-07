@@ -22,12 +22,10 @@ public class PacienteController {
 
 	private static final Logger logger = LogManager.getLogger(PacienteController.class);
 
-	private final PacienteRepository pacienteRepository;
 	private final PacienteService pacienteService;
 
 	@Autowired
-	public PacienteController(PacienteService pacienteService, PacienteRepository pacienteRepository) {
-		this.pacienteRepository = pacienteRepository;
+	public PacienteController(PacienteService pacienteService) {
 		this.pacienteService = pacienteService;
 	}
 

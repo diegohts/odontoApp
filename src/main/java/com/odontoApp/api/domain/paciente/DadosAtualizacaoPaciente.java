@@ -3,6 +3,7 @@ package com.odontoApp.api.domain.paciente;
 import com.odontoApp.api.domain.endereco.DadosEndereco;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import com.fasterxml.jackson.annotation.JsonAlias;
 
 public record DadosAtualizacaoPaciente (
 
@@ -12,6 +13,9 @@ public record DadosAtualizacaoPaciente (
 	String nome,
 
 	String telefone,
+
+	@JsonAlias({"id_convenio", "convenio_id"})
+	Long idConvenio,
 
 	@Valid
 	DadosEndereco endereco) {
