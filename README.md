@@ -14,7 +14,7 @@
 OdontoApp é um sistema para a gestão de uma clínica odontólogica.
 O aplicativo deve possuir funcionalidades que permitam o cadastro de dentistas e de pacientes, e também o agendamento e cancelamento de consultas, listas de procedimentos realizados e seus valores e listas de convênios que tem parceria com a clínica e um registro dos pagamentos feitos.
 
-Nesse projeto está nossa versão backend, realizando todo o desenvolvimento da API REST da aplicação através da linguagem JAVA, juntamente com seu framework Spring Boot. Enquanto posteriormente será realizado a construção frontend com framework Angular no intuito de consumir a API REST aqui realizada.
+Nesse projeto está nossa versão backend, realizando todo o desenvolvimento da API REST da aplicação através da linguagem JAVA, juntamente com seu framework Spring Boot. Enquanto está em construção nosso projeto frontend com framework Angular no intuito de consumir a API REST aqui realizada.
 
 # Funcionalidades
 
@@ -34,12 +34,10 @@ Nesse projeto está nossa versão backend, realizando todo o desenvolvimento da 
 Todas as informações aprendidas e que são importantes para a construção do projeto.
 
 Swagger é uma ferramenta de software livre que ajuda a projetar, construir, documentar e consumir APIs RESTful. Ele fornece uma interface gráfica de usuário para visualizar e interagir com as APIs e também gera automaticamente a documentação da API em diferentes formatos.
-E o swagger da aplicação está sendo exibido através da seguinte url: <a href="http://localhost:8080/swagger-ui/index.html#/">http://localhost:8080/swagger-ui/index.html#/</a>
+E o swagger da aplicação está sendo exibido através da seguinte url: <a href="https://odontoapp-production.up.railway.app/swagger-ui/index.html#/">https://odontoapp-production.up.railway.app/swagger-ui/index.html#/</a>
 
 OpenAPI 3.0 é uma especificação para descrição de APIs RESTful, que permite documentar e padronizar a interface das suas APIs, tornando mais fácil para os desenvolvedores entenderem e utilizarem os seus serviços.
-O OpenAPI do projeto é apresentado no seguinte link: <a href="http://localhost:8080/v3/api-docs">http://localhost:8080/v3/api-docs</a>
-
-.........................EM CONSTRUÇÃO.....................
+O OpenAPI do projeto é apresentado no seguinte link: <a href="https://odontoapp-production.up.railway.app/v3/api-docs">https://odontoapp-production.up.railway.app/v3/api-docs</a>
 
 # Tecnologias
 
