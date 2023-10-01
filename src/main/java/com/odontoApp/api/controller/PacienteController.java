@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
+import java.util.Objects;
+import java.util.Optional;
 import com.odontoApp.api.domain.paciente.*;
 import jakarta.validation.Valid;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -78,5 +80,21 @@ public class PacienteController {
 		logger.info("O paciente de codigo " + id + " foi inativado com sucesso");
 
 		return ResponseEntity.noContent().build();
+	}
+
+	@GetMapping("/existe")
+	public ResponseEntity<Boolean> verificarExistencia(
+			@RequestParam(name = "tipo") Optional<String> tipoInformado,
+			@RequestParam(name = "cpf", required = false) Optional<String> cpfInformado) {
+		Boolean resultado = true;
+		String tipo = tipoInformado.orElseThrow();
+
+		if (Objects.equals(tipo, "cpf")) {
+			resultado = pacienteService.cpfPacienteJaCadastrado(cpfInformado.orElseThrow());
+		}
+
+		logger.info("Verificando a existencia do paciente no sistema");
+
+		return ResponseEntity.ok(resultado);
 	}
 }
