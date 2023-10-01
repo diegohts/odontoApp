@@ -85,10 +85,14 @@ public class PacienteController {
 	@GetMapping("/existe")
 	public ResponseEntity<Boolean> verificarExistencia(
 			@RequestParam(name = "tipo") Optional<String> tipoInformado,
+			@RequestParam(name = "email", required = false) Optional<String> emailInformado,
 			@RequestParam(name = "cpf", required = false) Optional<String> cpfInformado) {
 		Boolean resultado = true;
 		String tipo = tipoInformado.orElseThrow();
 
+		if (Objects.equals(tipo, "email")) {
+			resultado = pacienteService.emailPacienteJaCadastrado(emailInformado.orElseThrow());
+		}
 		if (Objects.equals(tipo, "cpf")) {
 			resultado = pacienteService.cpfPacienteJaCadastrado(cpfInformado.orElseThrow());
 		}
